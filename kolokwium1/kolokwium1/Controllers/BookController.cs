@@ -16,9 +16,11 @@ public class BookController : ControllerBase
     }
     [HttpGet]
     [Route("api/books/{id}/authors")]
-    public async Task<IActionResult> GetAnimal(int id)
+    public async Task<IActionResult> GetAuthor(int id)
     {
-
+        if (!await _bookRepository.DoesAuthorExist(id))
+            return NotFound("Book not found");
+        
         var bookAuthor = await _bookRepository.GetAuthorByID(id);
             
         return Ok(bookAuthor);

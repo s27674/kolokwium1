@@ -11,6 +11,25 @@ public class BookRepository : IBookRepository
         _configuration = configuration;
     }
     
+    public async Task<bool> DoesAuthorExist(int id)
+    {
+        var query = "SELECT 1 FROM authors WHERE PK = @PK";
+        
+        using SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("Default"));
+        using SqlCommand command = new SqlCommand();
+
+        command.Connection = connection;
+        command.CommandText = query;
+        command.Parameters.AddWithValue("@PK", id);
+
+        await connection.OpenAsync();
+
+        var res = await command.ExecuteScalarAsync();
+        
+        return res is not null;
+    }
+
+    
     public async Task<BookAuthor> GetAuthorByID(int id)
     {
         var query = @"SELECT books.PK, books.title, authors.first_name, authors.last_name
