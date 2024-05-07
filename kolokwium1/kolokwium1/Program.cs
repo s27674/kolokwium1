@@ -1,3 +1,5 @@
+using kolokwium1.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -8,7 +10,7 @@ builder.Services.AddSwaggerGen();
 // Dodanie kontrolerów
 builder.Services.AddControllers();
 
-//builder.Services.AddScoped<>();
+builder.Services.AddScoped<IBookRepository, BookRepository>();
 
 var app = builder.Build();
 
